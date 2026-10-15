@@ -24,7 +24,7 @@ herdr plugin action invoke seankao31.herdr-autoresume.setup-keys
 
 The first command shows what the plugin will run, then installs it. The second binds the plugin's actions to the keys listed under [Use](#use), skipping any key already in use, and reloads herdr; a notification says what it added. To use other keys, change the `key` lines it added to herdr's `config.toml` (`%APPDATA%\herdr\config.toml` on Windows, `~/.config/herdr/config.toml` on Linux and macOS).
 
-Update the plugin later with `herdr plugin update`.
+Update the plugin later with `herdr plugin update`. To stay on a release instead of following the latest changes, install with `--ref`, for example `herdr plugin install seankao31/herdr-autoresume --ref v0.1.0`.
 
 ## Start herdr at login
 
@@ -78,7 +78,7 @@ Each kept command has a `label`, the `cwd` and `command` to run, the herdr `sess
 
 ## Development
 
-Clone the repo and run `herdr plugin link <folder>`. Linked plugins run from the folder, so edits apply to the next hook or action.
+Clone the repo and run `herdr plugin link <folder>`. Linked plugins run from the folder, so edits apply to the next hook or action. Changes are made on the `dev` branch and merged into `main` once tested; installs without `--ref` follow `main`.
 
 ## License
 
