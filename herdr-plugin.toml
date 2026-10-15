@@ -30,6 +30,12 @@ title = "Stop herdr and start fresh next time"
 contexts = ["global"]
 command = ["node", "src/open-popup.js", "stop-fresh"]
 
+[[actions]]
+id = "setup-keys"
+title = "Add key bindings for Auto-resume to config.toml"
+contexts = ["global"]
+command = ["node", "src/setup-keys.js"]
+
 [[panes]]
 id = "kept-commands"
 title = "Kept commands"
