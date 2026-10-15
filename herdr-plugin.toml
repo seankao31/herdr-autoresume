@@ -1,6 +1,6 @@
 id = "seankao31.herdr-autoresume"
 name = "Herdr Autoresume"
-version = "0.3.1"
+version = "0.1.0"
 min_herdr_version = "0.9.5"
 description = "Pick up where your agents left off after herdr restarts: interrupted agents continue, idle agents restore their background work, and kept commands restart."
 platforms = ["linux", "macos", "windows"]
