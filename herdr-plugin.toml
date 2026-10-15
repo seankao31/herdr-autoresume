@@ -1,6 +1,6 @@
-id = "autoresume"
+id = "seankao31.herdr-autoresume"
 name = "Auto-resume"
-version = "0.2.0"
+version = "0.3.0"
 min_herdr_version = "0.9.5"
 description = "After a restart, prompt agents to continue or restore their background work, and restart kept commands"
 platforms = ["linux", "macos", "windows"]

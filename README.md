@@ -19,7 +19,7 @@ herdr brings back your layout and resumes agents into their conversations, but t
 
 ```sh
 herdr plugin install seankao31/herdr-autoresume
-herdr plugin action invoke autoresume.setup-keys
+herdr plugin action invoke seankao31.herdr-autoresume.setup-keys
 ```
 
 The first command shows what the plugin will run, then installs it. The second binds the plugin's actions to the keys listed under [Use](#use), skipping any key already in use, and reloads herdr; a notification says what it added. To use other keys, change the `key` lines it added to herdr's `config.toml` (`%APPDATA%\herdr\config.toml` on Windows, `~/.config/herdr/config.toml` on Linux and macOS).
@@ -40,13 +40,13 @@ On Windows: add a Windows Terminal profile with the command line `%LOCALAPPDATA%
 | Kept commands | `prefix+alt+s` | A popup to see, enable, disable or delete kept commands. |
 | Stop and start fresh | `prefix+alt+q` | Asks first, then closes every workspace and stops herdr. The next start opens one empty workspace and starts no kept commands. |
 
-Any other way herdr stops, such as a reboot, a crash or `herdr server stop`, is restored and resumed. Each action also runs from a shell, for example `herdr plugin action invoke autoresume.toggle-keep`.
+Any other way herdr stops, such as a reboot, a crash or `herdr server stop`, is restored and resumed. Each action also runs from a shell, for example `herdr plugin action invoke seankao31.herdr-autoresume.toggle-keep`.
 
-What the plugin did after a restart is logged in `autoresume.log`, in the plugin's state directory under the herdr session's name. On Windows that is `%LOCALAPPDATA%\herdr\plugins\autoresume\default\autoresume.log`.
+What the plugin did after a restart is logged in `autoresume.log`, in the plugin's state directory under the herdr session's name. On Windows that is `%LOCALAPPDATA%\herdr\plugins\seankao31.herdr-autoresume\default\autoresume.log`.
 
 ## Configure
 
-Settings are in `config.json`, in the folder printed by `herdr plugin config-dir autoresume`. The plugin fills the file with every setting and its default; edit the values there. Changes apply at the next herdr start.
+Settings are in `config.json`, in the folder printed by `herdr plugin config-dir seankao31.herdr-autoresume`. The plugin fills the file with every setting and its default; edit the values there. Changes apply at the next herdr start.
 
 | Setting | Default | Meaning |
 | --- | --- | --- |

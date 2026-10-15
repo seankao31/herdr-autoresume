@@ -8,7 +8,7 @@ const os = require('node:os');
 const path = require('node:path');
 const { herdr, log, notify } = require('./lib');
 
-const PLUGIN = process.env.HERDR_PLUGIN_ID || 'autoresume';
+const PLUGIN = process.env.HERDR_PLUGIN_ID || 'seankao31.herdr-autoresume';
 const BINDINGS = [
   { key: 'prefix+alt+k', action: 'toggle-keep', description: "keep / stop keeping this pane's command" },
   { key: 'prefix+alt+s', action: 'kept-commands', description: 'show kept commands' },
