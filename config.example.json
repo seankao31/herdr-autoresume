@@ -1,0 +1,18 @@
+{
+  "agents": ["claude", "codex"],
+  "interruptedStatuses": ["working", "blocked"],
+  "idleSessions": "check-in",
+  "idleCheckinWithinHours": 24,
+  "agentReadyTimeoutSec": 300,
+  "settleSeconds": 3,
+  "recordRetentionDays": 14,
+  "services": [
+    {
+      "label": "dev-server",
+      "session": "default",
+      "cwd": "/home/me/projects/app",
+      "command": "npm run dev",
+      "skipIfRunning": "vite"
+    }
+  ]
+}

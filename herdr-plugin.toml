@@ -1,0 +1,47 @@
+id = "autoresume"
+name = "Auto-resume"
+version = "0.2.0"
+min_herdr_version = "0.9.5"
+description = "After a restart, prompt agents to continue or restore their background work, and restart kept commands"
+platforms = ["linux", "macos", "windows"]
+
+[[startup]]
+command = ["node", "src/startup.js"]
+
+[[events]]
+on = "pane.agent_status_changed"
+command = ["node", "src/record.js"]
+
+[[actions]]
+id = "toggle-keep"
+title = "Keep / stop keeping this pane's command"
+contexts = ["pane"]
+command = ["node", "src/keep.js"]
+
+[[actions]]
+id = "kept-commands"
+title = "Show kept commands"
+contexts = ["global"]
+command = ["node", "src/open-popup.js", "kept-commands"]
+
+[[actions]]
+id = "stop-fresh"
+title = "Stop herdr and start fresh next time"
+contexts = ["global"]
+command = ["node", "src/open-popup.js", "stop-fresh"]
+
+[[panes]]
+id = "kept-commands"
+title = "Kept commands"
+placement = "popup"
+width = "80%"
+height = "60%"
+command = ["node", "src/ui-kept.js"]
+
+[[panes]]
+id = "stop-fresh"
+title = "Stop herdr and start fresh"
+placement = "popup"
+width = 80
+height = 14
+command = ["node", "src/ui-stop-fresh.js"]
