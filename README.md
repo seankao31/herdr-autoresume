@@ -79,3 +79,7 @@ Each kept command has a `label`, the `cwd` and `command` to run, the herdr `sess
 ## Development
 
 Clone the repo and run `herdr plugin link <folder>`. Linked plugins run from the folder, so edits apply to the next hook or action.
+
+## License
+
+[MIT](LICENSE)
