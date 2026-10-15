@@ -9,6 +9,6 @@ const res = herdr(['plugin', 'pane', 'open', '--plugin', process.env.HERDR_PLUGI
   allowError: true,
 });
 if (res.error) {
-  notify('Auto-resume', `Could not open ${entrypoint}: ${res.error.message || res.error.code}`);
+  notify('Herdr Autoresume', `Could not open ${entrypoint}: ${res.error.message || res.error.code}`);
   process.exitCode = 1;
 }

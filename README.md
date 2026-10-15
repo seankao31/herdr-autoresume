@@ -1,4 +1,4 @@
-# herdr-autoresume
+# Herdr Autoresume
 
 Picks up your work after [herdr](https://herdr.dev) restarts: after a reboot, a crash or `herdr server stop`.
 

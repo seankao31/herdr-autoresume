@@ -1,8 +1,8 @@
 id = "seankao31.herdr-autoresume"
-name = "Auto-resume"
-version = "0.3.0"
+name = "Herdr Autoresume"
+version = "0.3.1"
 min_herdr_version = "0.9.5"
-description = "After a restart, prompt agents to continue or restore their background work, and restart kept commands"
+description = "Pick up where your agents left off after herdr restarts: interrupted agents continue, idle agents restore their background work, and kept commands restart."
 platforms = ["linux", "macos", "windows"]
 
 [[startup]]
@@ -32,7 +32,7 @@ command = ["node", "src/open-popup.js", "stop-fresh"]
 
 [[actions]]
 id = "setup-keys"
-title = "Add key bindings for Auto-resume to config.toml"
+title = "Add key bindings for Herdr Autoresume to config.toml"
 contexts = ["global"]
 command = ["node", "src/setup-keys.js"]
 

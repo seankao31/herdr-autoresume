@@ -69,7 +69,7 @@ function main() {
   }
 
   if (added.length === 0) {
-    notify('Auto-resume: no key bindings added', skipped.join('; '));
+    notify('Herdr Autoresume: no key bindings added', skipped.join('; '));
     log(`setup-keys: nothing added (${skipped.join('; ')})`);
     return;
   }
@@ -89,7 +89,7 @@ function main() {
   if (!/config: ok/.test(checkText)) {
     if (original !== '') fs.writeFileSync(file, original);
     else fs.rmSync(file, { force: true });
-    notify('Auto-resume: key bindings not added', `herdr rejected the change, so config.toml was restored: ${checkText.slice(0, 200)}`);
+    notify('Herdr Autoresume: key bindings not added', `herdr rejected the change, so config.toml was restored: ${checkText.slice(0, 200)}`);
     log(`setup-keys: config check failed, restored config.toml: ${checkText}`);
     process.exitCode = 1;
     return;
@@ -97,13 +97,13 @@ function main() {
   herdr(['server', 'reload-config'], { allowError: true });
 
   const summary = added.map((b) => `${b.key}: ${b.description}`).join('; ');
-  notify('Auto-resume: key bindings added', summary + (skipped.length ? `. Skipped: ${skipped.join('; ')}` : ''));
+  notify('Herdr Autoresume: key bindings added', summary + (skipped.length ? `. Skipped: ${skipped.join('; ')}` : ''));
   log(`setup-keys: added ${summary}${skipped.length ? `; skipped ${skipped.join('; ')}` : ''}; backup at ${backup}`);
 }
 
 try {
   main();
 } catch (err) {
-  notify('Auto-resume: setup-keys failed', err.message);
+  notify('Herdr Autoresume: setup-keys failed', err.message);
   process.exitCode = 1;
 }

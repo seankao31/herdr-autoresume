@@ -35,7 +35,7 @@ function nameFor(argv) {
 
 function main() {
   const paneId = focusedPaneId();
-  if (!paneId) return notify('Auto-resume', 'No focused pane.');
+  if (!paneId) return notify('Herdr Autoresume', 'No focused pane.');
   const pane = herdr(['pane', 'get', paneId]).result.pane;
   seedConfig();
   const config = readUserConfig();
@@ -82,6 +82,6 @@ function main() {
 try {
   main();
 } catch (err) {
-  notify('Auto-resume: keep failed', err.message);
+  notify('Herdr Autoresume: keep failed', err.message);
   process.exitCode = 1;
 }
