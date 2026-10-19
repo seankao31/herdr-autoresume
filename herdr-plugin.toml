@@ -12,6 +12,22 @@ command = ["node", "src/startup.js"]
 on = "pane.agent_status_changed"
 command = ["node", "src/record.js"]
 
+[[events]]
+on = "pane.closed"
+command = ["node", "src/pane-closed.js"]
+
+[[events]]
+on = "pane.exited"
+command = ["node", "src/pane-closed.js"]
+
+[[events]]
+on = "tab.closed"
+command = ["node", "src/pane-closed.js"]
+
+[[events]]
+on = "workspace.closed"
+command = ["node", "src/pane-closed.js"]
+
 [[actions]]
 id = "toggle-keep"
 title = "Keep / stop keeping this pane's command"

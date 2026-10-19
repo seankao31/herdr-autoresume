@@ -8,11 +8,13 @@ const {
   herdr,
   notify,
   paneProgram,
+  readKeptPanes,
   readUserConfig,
   seedConfig,
   serviceSession,
   sessionKey,
   shellKind,
+  writeKeptPanes,
   writeUserConfig,
 } = require('./lib');
 
@@ -76,6 +78,7 @@ function main() {
   config.services = services;
   writeUserConfig(config);
   herdr(['pane', 'rename', paneId, KEEP_PREFIX + label], { allowError: true });
+  writeKeptPanes({ ...readKeptPanes(), [label]: paneId });
   notify(`Keeping ${label}`, `It will be started again here after herdr restarts: ${command}`);
 }
 

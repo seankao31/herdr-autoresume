@@ -6,9 +6,10 @@ A [herdr](https://herdr.dev) plugin, id `seankao31.herdr-autoresume`. Node.js, n
 
 | File | Role |
 | --- | --- |
-| `herdr-plugin.toml` | Manifest: startup hook, `pane.agent_status_changed` event hook, 4 actions, 2 popup panes |
+| `herdr-plugin.toml` | Manifest: startup hook, event hooks (`pane.agent_status_changed`; `pane.closed`, `pane.exited`, `tab.closed`, `workspace.closed`), 4 actions, 2 popup panes |
 | `src/lib.js` | Shared helpers and `DEFAULTS` (every setting); `seedConfig()` writes missing settings into `config.json` |
 | `src/record.js` | Event hook: records each agent session's status, per server run |
+| `src/pane-closed.js` | Event hook: stops keeping a kept command whose pane was closed |
 | `src/startup.js` | Startup hook: reads each session's final status from the previous run, sends continue or check-in prompts, starts kept commands |
 | `src/keep.js` | Action `toggle-keep` |
 | `src/ui-kept.js`, `src/ui-stop-fresh.js` | Popups (raw-mode TTY); `src/open-popup.js` opens them from actions |
@@ -21,6 +22,7 @@ A [herdr](https://herdr.dev) plugin, id `seankao31.herdr-autoresume`. Node.js, n
 - **Per-session keys**: herdr's plugin state and config directories are shared by all herdr sessions, so state is kept under the session name (`sessionKey()`, from the socket path) and each kept command has a `session` field.
 - **Prompting**: herdr resumes agents only after a client attaches. `startup.js` waits up to `agentReadyTimeoutSec` for each session to be `idle` or `done`, then runs `herdr agent prompt --wait --until working`, retrying once on `agent_prompt_stalled`.
 - **Kept commands**: the pane is found by its label `↻ <label>` (herdr persists pane labels), else a tab with the label, else a new tab. The command is captured with `herdr pane process-info`. On Windows that reports only the shell for ordinary programs, so `paneProgram()` falls back to the shell's oldest child process (CIM on Windows, `/proc` or `ps` elsewhere). `commandLine()` re-quotes for the pane's shell; PowerShell needs the `&` call operator.
+- **Closing a kept pane stops keeping it**, always, not as a setting. Stopping the program while the pane stays open does not, so a crash or Ctrl+C keeps it. The close events carry only ids, and the panes are gone when the hook runs, so `<state>/<session>/kept-panes.json` records `{ label: paneId }` for the current run: `startup.js` writes it after starting kept commands, and `keep.js` adds to it. `pane-closed.js` treats a kept command as closed when neither its label nor its pane id is still in `herdr pane list`, which spares a moved pane (same label) and a renamed one (same id). A kept command with no pane in this run, for example one skipped by `skipIfRunning` whose pane was already gone, or a hand-written one, is never removed. The hook does nothing while the `fresh-start` marker exists, because "stop and start fresh" closes every workspace on purpose. Until the first startup or keep under a new install, there is no record for the current run, so a close then does nothing.
 - **Stop and start fresh**: closes every workspace, writes the `fresh-start` marker and stops the server; the next startup sees the marker and does nothing. With a client attached, herdr creates one blank workspace when the last one closes, which is expected.
 - **Do not infer agent state from Claude transcripts**: on resume, Claude Code appends a placeholder "No response requested." reply to an interrupted turn, so the transcript looks finished. Use herdr's agent status.
 
@@ -31,6 +33,8 @@ A [herdr](https://herdr.dev) plugin, id `seankao31.herdr-autoresume`. Node.js, n
 - `herdr plugin pane open --placement` does not accept `popup`; a popup's placement comes from the manifest.
 - Plugins, including popups, are a preview feature on Windows. Hooks run through a short-lived helper, so a hook's parent process is not the server.
 - `herdr plugin install` and `herdr plugin update` need `--yes` when stdin is not interactive.
+- Close events, checked on 0.9.5: closing a pane emits `pane.closed` (only `pane_id`, `workspace_id`); a shell exiting emits only `pane.exited`; closing a tab emits only `tab.closed` and closing a workspace only `workspace.closed`, with no event per pane. `server stop` emits none of them. Pane ids are not reused within a run and survive a restart along with labels.
+- Raw event subscriptions on Windows use the named pipe `\\.\pipe\` + the socket path, for example `\\.\pipe\C:\Users\<user>\AppData\Roaming\herdr\herdr.sock`; subscribe with `{"method":"events.subscribe","params":{"subscriptions":[{"type":"pane.closed"}]}}`.
 - herdr's own defaults use `prefix+h/j/k/l`; this plugin suggests `prefix+alt+k/s/q`, which no popular plugin uses.
 
 ## Testing
@@ -50,7 +54,7 @@ Because the registry is global, the installed copy of this plugin also runs in a
   node src/startup.js
   ```
 
-  For `record.js`, also set `HERDR_PLUGIN_EVENT_JSON='{"data":{"pane_id":"w1:p1"}}'`. For `setup-keys.js`, set `HERDR_CONFIG_PATH` to a scratch file.
+  For `record.js`, also set `HERDR_PLUGIN_EVENT_JSON='{"data":{"pane_id":"w1:p1"}}'`; `pane-closed.js` ignores the event's contents. For `keep.js`, set `HERDR_PANE_ID` to the pane. For `setup-keys.js`, set `HERDR_CONFIG_PATH` to a scratch file.
 - **End to end**: install the branch under test globally (`herdr plugin install seankao31/herdr-autoresume --ref dev --yes`), test, then reinstall `main`. This affects every session, so only do it with the maintainer's agreement.
 
 A server for a named session needs Node on its `PATH`: start it with `Start-Process herdr.exe -ArgumentList '--session','<name>','server' -WindowStyle Hidden`, and attach a client (`wt -w new new-tab herdr.exe --session <name>`) when agents need to resume.

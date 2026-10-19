@@ -22,6 +22,7 @@ const {
   sessionKey,
   sleep,
   writeJsonAtomic,
+  writeKeptPanes,
 } = require('./lib');
 
 // A check-in reply within this long after our prompt is not new activity of the session's own.
@@ -142,6 +143,15 @@ function startServices(config) {
       log(`kept command ${svc.label}: ${err.message}`);
     }
   }
+  // Remember the pane of every kept command that has one, including disabled ones and those running
+  // outside herdr, so closing that pane stops keeping it.
+  const panes = herdr(['pane', 'list'], { allowError: true }).result?.panes || [];
+  const kept = {};
+  for (const svc of config.services) {
+    const pane = serviceSession(svc) === sessionKey() && panes.find((p) => p.label === KEEP_PREFIX + svc.label);
+    if (pane) kept[svc.label] = pane.pane_id;
+  }
+  writeKeptPanes(kept);
 }
 
 async function main() {

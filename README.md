@@ -36,7 +36,7 @@ On Windows: add a Windows Terminal profile with the command line `%LOCALAPPDATA%
 
 | Action | Key | What it does |
 | --- | --- | --- |
-| Keep / stop keeping | `prefix+alt+k` | Press it in a pane running a long-lived command. The pane is labelled `↻ <name>`, and the command starts again there after a restart. Press it again to stop. Agent panes don't need it: herdr resumes agents itself. |
+| Keep / stop keeping | `prefix+alt+k` | Press it in a pane running a long-lived command. The pane is labelled `↻ <name>`, and the command starts again there after a restart. Press it again, or close the pane, to stop keeping it. Agent panes don't need it: herdr resumes agents itself. |
 | Kept commands | `prefix+alt+s` | A popup to see, enable, disable or delete kept commands. |
 | Stop and start fresh | `prefix+alt+q` | Asks first, then closes every workspace and stops herdr. The next start opens one empty workspace and starts no kept commands. |
 

@@ -97,6 +97,15 @@ function stateDir() {
 const agentsDir = () => path.join(stateDir(), 'agents');
 const freshMarker = () => path.join(stateDir(), 'fresh-start');
 
+// The pane each kept command is in during this server run, as { label: paneId }. The close hook uses
+// it to tell a kept command whose pane was closed from one that has had no pane in this run.
+const keptPanesFile = () => path.join(stateDir(), 'kept-panes.json');
+function readKeptPanes() {
+  const data = readJson(keptPanesFile());
+  return data && data.boot === bootId() ? data.panes || {} : {};
+}
+const writeKeptPanes = (panes) => writeJsonAtomic(keptPanesFile(), { boot: bootId(), panes });
+
 function recordFile(agent, sessionId) {
   const id = crypto.createHash('sha1').update(`${agent}:${sessionId}`).digest('hex').slice(0, 16);
   return path.join(agentsDir(), `${agent}-${id}.json`);
@@ -318,6 +327,7 @@ module.exports = {
   notify,
   paneProgram,
   readJson,
+  readKeptPanes,
   readRecords,
   readUserConfig,
   recordFile,
@@ -328,5 +338,6 @@ module.exports = {
   sleep,
   stateDir,
   writeJsonAtomic,
+  writeKeptPanes,
   writeUserConfig,
 };
